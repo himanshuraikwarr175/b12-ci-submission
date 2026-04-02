@@ -1,0 +1,28 @@
+name: B12 Submission CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run submission script
+        env:
+          REPO_LINK: https://github.com/${{ github.repository }}
+          ACTION_RUN_LINK: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python app/submit.py
